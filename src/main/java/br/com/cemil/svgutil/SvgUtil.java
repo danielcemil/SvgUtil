@@ -27,8 +27,14 @@ public class SvgUtil {
     
     private Document documento;
     private XPath xpath;
+    private boolean COMENTARIOS;
+    private boolean DECLARACOES_XML;
     
     public SvgUtil( File arquivo ) {
+        
+        COMENTARIOS = false;
+        DECLARACOES_XML = false;
+        
         documento = criarDocumento( arquivo );
         xpath = criarXPath();
     }
@@ -72,9 +78,20 @@ public class SvgUtil {
         OutputFormat formato = new OutputFormat( documento );
         Writer saida = new StringWriter();
         
+        formato.setOmitComments( COMENTARIOS );
+        formato.setOmitXMLDeclaration( DECLARACOES_XML );
+        
         serializarDocumento( saida, formato );
         
         return saida;
+    }
+    
+    public void omitirComentarios( boolean opt ) {
+        COMENTARIOS = opt;
+    }
+    
+    public void omitirDeclaracoesXml( boolean opt ) {
+        DECLARACOES_XML = opt;
     }
     
     public String obterSvgAtualizado( Map<String, String> valores ) throws XPathExpressionException, IOException {
